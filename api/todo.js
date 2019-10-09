@@ -60,5 +60,13 @@ module.exports = (app, options) => {
       res.status(status.OK).json(result)      
     })
   })
+
+  // to update a todo item
+  app.put('/user/:userID/todo/:ID',(req,res)=>{
+    repo.updateTodo(req.params.userID, req.params.ID)
+    .then(result => {
+      res.status(status.OK).json(result)      
+    })
+  })
   
 }

@@ -213,7 +213,25 @@ const repository = (Pool) => {
         });
     }
 
-    
+    const updateTodo = (userID, ID) => {
+        return new Promise((resolve) => {
+            getPoolConnection()
+            .then(()=>{
+                var query_str = "UPDATE ToDo SET completed=1 WHERE (userID = ? and ID = ?)";
+                var query_var = [userID, ID];
+                dbConnection.query(query_str, query_var, (err, result) => {
+                    if(err) {
+                        resolve({code:500, msg:`An error while updating a todo with id ${ID}`, err});
+                    }
+                    resolve({code:200, msg:`successfully update a todo with id ${ID}`, data:result});
+                });  
+            })
+            .catch(err=>{
+                resolve({code:500,msg:"DB connection error",err})
+            })
+        });
+    }
+
     return Object.create({
         //Prototype objects
         createTables,
@@ -222,7 +240,8 @@ const repository = (Pool) => {
         createUser,
         getUserTodos,
         createTodo,
-        removeTodo
+        removeTodo,
+        updateTodo
     })
 }
 
